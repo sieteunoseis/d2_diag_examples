@@ -1,0 +1,160 @@
+direction: right
+
+title:  |md
+  # ODIS/OIH Activity Flow 
+
+| { near: top-center }
+
+classes: {
+data: {
+    width: 200
+               style: {
+                     stroke-width: 0
+                    fill: "#44C7B1"
+                    shadow: true
+                    border-radius: 5
+               }
+      }
+input: {
+    width: 200
+               style: {
+                     stroke-width: 0
+                    fill: lightblue
+                    shadow: true
+                    border-radius: 5
+               }
+      }
+
+code: {
+    width: 200
+               style: {
+                     stroke-width: 0
+                    fill: honeydew
+                    shadow: true
+                    border-radius: 5
+               }
+      }
+
+group: {
+    width: 200
+               style: {
+                     stroke-width: 0
+                    fill: pink
+                    shadow: true
+                    border-radius: 5
+               }
+      }
+
+}
+
+jld: JSON-LD Partner\nSource Files
+
+g: Gleaner
+
+s3: ODIS Digital Objects {
+    jld:  Harvested JSON-LD \n Files
+    nq:  RDF / nq Files
+}
+
+mdpgen: MDP Generator
+
+q: SPARQL \n Queries
+
+prod: ODIS Products {
+    solr: Solr JSON
+    p: Parquet
+    csv: CSV
+}
+
+# Validation
+val: Validation (GitHub Actions) {
+        sh: SHACL Shapes
+        shr: SHACL reports
+sh -> shr
+        sh.class: input
+        shr.class: code
+}
+        val.class: group
+
+s3.nq -> val
+
+jld -> g 
+g -> s3.jld
+g -> s3.nq
+
+m2s: MDP To Solr
+prod.p -> m2s
+prod.solr <- m2s
+
+q -> mdpgen
+s3.nq -> mdpgen -> prod.p
+mdpgen -> prod.csv {
+  style: {
+    stroke-dash: 3
+  }
+}
+
+rel: MDP Releaser
+
+
+prod.p -> rel
+prod.csv -> rel {
+  style: {
+    stroke-dash: 3
+  }
+}
+s3.nq -> rel
+
+pp: Public Products {
+    cloud: Public Cloud \n Product Objects Releases
+}
+
+ui: Portal {
+        pui: Portal UI
+        solr: Solr
+
+                solr -> pui
+
+        *.class: code
+}
+
+dash: Dashboard {
+        dui: Dashboard UI
+        dui.class: code
+}
+
+        dash.class: group
+
+                prod.p -> dash.dui
+
+ui.class: group
+ prod.solr -> solrloader -> ui.solr
+solrloader.class: code
+rel -> pp.cloud
+
+zp: Zenodo Publisher
+z: Zenodo Objects
+
+pp.cloud -> zp
+zp -> z
+
+jld.class: input
+q.class: input
+
+s3.jld.class:data
+s3.nq.class:data
+pp.cloud.class: data
+prod.p.class: data
+prod.csv.class: data
+prod.solr.class: data
+z.class: data
+
+pp.class: group
+prod.class: group
+s3.class: group
+
+m2s.class: code
+g.class: code
+mdpgen.class: code
+rel.class: code
+zp.class: code
