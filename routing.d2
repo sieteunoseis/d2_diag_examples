@@ -1,0 +1,146 @@
+grid-columns: 12
+grid-rows: 2
+grid-gap: 240
+direction: down
+1: "User dials a number"
+
+2: Route Pattern {
+  class: block
+  style: {
+    fill: "#FFEBCD"
+  }
+  Search Route Patterns -> "9.1[2-9]XX[2-9]XXXXXX": Matched
+}
+
+1 -> 2: 918082982408 {style.animated: true}
+2 -> 3: Send to Route List {style.animated: true}
+
+3: Route List {
+  PSX ANI Auth Gateway RG: {
+    PSXvgwapps01-ANI-Auth
+  }
+  DCR ANI Auth Gateway RG: {
+    DCRvgwapps01-ANI-Auth
+  }
+  PSX ANI Auth Gateway RG -> DCR ANI Auth Gateway RG
+}
+
+3 -> 4: Send to Gateway {style.animated: true}
+
+4: Gateways {
+  Gateways: {
+    shape: sql_table
+    "PSXvgwapps01.ohsu.edu"
+    "DCRvgwapps01.ohsu.edu"
+  }
+}
+
+4 <-> 5: {style.animated: true}
+
+5: TCL Script {
+  class: block
+  style: {
+    fill: "#FFEBCD"
+  }
+  TCL Script -> "callauthorize.tcl": Executed
+}
+
+4 -> 6: Send call back to CUCM {style.animated: true}
+
+6: SIP Trunks {
+  SIP Trunks: {
+    shape: sql_table
+    PSXvgwapps01-LongDistance-Egress
+    DCRvgwapps01-LongDistance-Egress
+  }
+}
+
+6 -> 7: Toll Routes CSS {style.animated: true}
+
+7: Route Pattern {
+  class: block
+  style: {
+    fill: "#FFEBCD"
+  }
+  Search Route Patterns -> "1[2-9]XX[2-9]XXXXXX": Matched
+}
+
+7 -> 8: PSTN Toll RL {style.animated: true}
+
+8: Route List {
+  Route Lists: {
+    shape: sql_table
+    CenturyLink LD MSB Trunks RG
+    CenturyLink LD BNK Trunks RG
+    CenturyLink MSB Trunks RG
+    CenturyLink BNK Trunks RG
+  }
+}
+
+8."Route Lists" -> 9: {style.animated: true}
+8."Route Lists" -> 10: {style.animated: true}
+8."Route Lists" -> 11: {style.animated: true}
+8."Route Lists" -> 12: {style.animated: true}
+
+9: CenturyLink LD MSB Trunks RG {
+  pri: {
+    shape: sql_table
+    "S0/SU1/DS1-3@DCRvgw01.ohsu.edu"
+  }
+}
+
+10: CenturyLink LD BNK Trunks RG {
+  pri: {
+    shape: sql_table
+    "S0/SU1/DS1-3@BNK1vgw04.ohsu.edu"
+    "S0/SU2/DS1-0@BNK1vgw03.ohsu.edu"
+    "S0/SU1/DS1-3@BNK1vgw03.ohsu.edu"
+  }
+}
+
+11: CenturyLink MSB Trunks RG {
+  pri: {
+    shape: sql_table
+    "S0/SU3/DS1-2@DCRvgw02.ohsu.edu"
+    "S0/SU3/DS1-2@DCRvgw01.ohsu.edu"
+    "S0/SU3/DS1-1@DCRvgw02.ohsu.edu"
+    "S0/SU3/DS1-0@DCRvgw02.ohsu.edu"
+    "S0/SU3/DS1-1@DCRvgw01.ohsu.edu"
+    "S0/SU3/DS1-0@DCRvgw01.ohsu.edu"
+    "S0/SU1/DS1-0@DCRvgw02.ohsu.edu"
+    "S0/SU0/DS1-3@DCRvgw02.ohsu.edu"
+    "S0/SU0/DS1-2@DCRvgw02.ohsu.edu"
+    "S0/SU0/DS1-1@DCRvgw02.ohsu.edu"
+    "S0/SU0/DS1-0@DCRvgw02.ohsu.edu"
+    "S0/SU1/DS1-1@DCRvgw01.ohsu.edu"
+    "S0/SU1/DS1-0@DCRvgw01.ohsu.edu"
+    "S0/SU0/DS1-3@DCRvgw01.ohsu.edu"
+    "S0/SU0/DS1-2@DCRvgw01.ohsu.edu"
+    "S0/SU0/DS1-1@DCRvgw01.ohsu.edu"
+    "S0/SU0/DS1-0@DCRvgw01.ohsu.edu"
+  }
+}
+
+12: CenturyLink BNK Trunks RG {
+  pri: {
+    shape: sql_table
+    "S0/SU2/DS1-1@BNK1vgw04.ohsu.edu"
+    "S0/SU2/DS1-3@BNK1vgw04.ohsu.edu"
+    "S0/SU2/DS1-2@BNK1vgw04.ohsu.edu"
+    "S0/SU2/DS1-3@BNK1vgw03.ohsu.edu"
+    "S0/SU2/DS1-2@BNK1vgw03.ohsu.edu"
+    "S0/SU2/DS1-1@BNK1vgw03.ohsu.edu"
+    "S0/SU1/DS1-1@BNK1vgw04.ohsu.edu"
+    "S0/SU1/DS1-0@BNK1vgw04.ohsu.edu"
+    "S0/SU0/DS1-3@BNK1vgw04.ohsu.edu"
+    "S0/SU0/DS1-2@BNK1vgw04.ohsu.edu"
+    "S0/SU0/DS1-1@BNK1vgw04.ohsu.edu"
+    "S0/SU0/DS1-0@BNK1vgw04.ohsu.edu"
+    "S0/SU1/DS1-1@BNK1vgw03.ohsu.edu"
+    "S0/SU1/DS1-0@BNK1vgw03.ohsu.edu"
+    "S0/SU0/DS1-3@BNK1vgw03.ohsu.edu"
+    "S0/SU0/DS1-2@BNK1vgw03.ohsu.edu"
+    "S0/SU0/DS1-1@BNK1vgw03.ohsu.edu"
+    "S0/SU0/DS1-0@BNK1vgw03.ohsu.edu"
+  }
+}

@@ -1,0 +1,49 @@
+direction: down
+
+# Third-Party
+Rswift: {
+  shape: hexagon
+}
+SwiftSoup: {
+  shape: hexagon
+}
+
+# The application
+
+app: {
+  shape: package
+}
+
+app <- CoronaCheckFoundation
+app <- CoronaCheckUI
+app <- RestrictedBrowser
+
+# - Packages - 
+
+CoronaCheckFoundation { style.fill: "#ffcc00" }
+CoronaCheckFoundation <- Persistence
+CoronaCheckFoundation <- Shared
+
+CoronaCheckUI { style.fill: "#ffcc00" }
+CoronaCheckUI <- Resources
+CoronaCheckUI <- ReusableViews
+CoronaCheckUI <- Shared
+
+Persistence { style.fill: "#ffcc00" }
+Persistence <- Shared
+
+Resources { style.fill: "#ffcc00" }
+Resources <- Shared
+Resources <- Rswift
+
+RestrictedBrowser { style.fill: "#ffcc00" }
+RestrictedBrowser <- Shared
+RestrictedBrowser <- Resources
+RestrictedBrowser <- ReusableViews
+
+ReusableViews { style.fill: "#ffcc00" }
+ReusableViews <- Shared
+ReusableViews <- Resources
+
+Shared { style.fill: "#ffcc00" }
+Shared <- SwiftSoup
