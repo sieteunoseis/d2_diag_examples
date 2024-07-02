@@ -1,0 +1,213 @@
+direction: right
+
+...@_base
+
+user01: User01 {
+  label: User01
+  class: [base; person; multiple]
+}
+
+user02: User02 {
+  label: User02
+  class: [base; person; multiple]
+}
+
+user03: User03 {
+  label: User03
+  class: [base; person; multiple]
+}
+
+user04: User04 {
+  label: User04
+  class: [base; person; multiple]
+}
+
+user01 -> container.task01: {
+  label: Create Task
+  class: [base; animated]
+}
+user02 -> container.task02: {
+  label: Create Task
+  class: [base; animated]
+}
+
+user03 -> container.task03: {
+  label: Create Task
+  class: [base; animated]
+}
+
+user04 -> container.task04: {
+  label: Create Task
+  class: [base; animated]
+}
+
+container: Application {
+  direction: right
+  style: {
+    bold: true
+    font-size: 28
+  }
+  icon: https://icons.terrastruct.com/dev%2Fgo.svg
+
+  task01: {
+    icon: https://icons.terrastruct.com/essentials%2F092-graph%20bar.svg
+    class: [task; multiple]
+  }
+
+  task02: {
+    icon: https://icons.terrastruct.com/essentials%2F095-download.svg
+    class: [task; multiple]
+  }
+
+  task03: {
+    icon: https://icons.terrastruct.com/essentials%2F195-attachment.svg
+    class: [task; multiple]
+  }
+
+  task04: {
+    icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+    class: [task; multiple]
+  }
+
+  queue: Queue Library {
+    icon: https://icons.terrastruct.com/dev%2Fgo.svg
+    style: {
+      bold: true
+      font-size: 32
+      fill: honeydew
+    }
+    producer01: {
+      label: Producer01
+      class: library
+    }
+
+    producer02: {
+      label: Producer02
+      class: library
+    }
+
+    producer03: {
+      label: Producer03
+      class: library
+    }
+
+    producer04: {
+      label: Producer04
+      class: library
+    }
+
+    consumer01: {
+      label: Consumer01
+      class: library
+    }
+
+    consumer02: {
+      label: Consumer02
+      class: library
+    }
+
+    consumer03: {
+      label: Consumer03
+      class: library
+    }
+
+    consumer04: {
+      label: Consumer04
+      class: library
+    }
+
+    database: Ring\nBuffer {
+      shape: cylinder
+      style: {
+        bold: true
+        font-size: 32
+        fill-pattern: lines
+        font: mono
+      }
+    }
+
+    redis: Redis {
+      icon: https://icons.terrastruct.com/dev%2Fredis.svg
+      shape: image
+      style: {
+        bold: true
+        font-size: 32
+        font: mono
+      }
+    }
+
+    rabbitmq: RabbotMQ {
+      icon: ./rabbitmq.svg
+      shape: image
+      style: {
+        bold: true
+        font-size: 32
+        font: mono
+      }
+    }
+
+    nats: NATS {
+      icon: ./nats.svg
+      shape: image
+      style: {
+        bold: true
+        font-size: 32
+        font: mono
+      }
+    }
+
+    producer01 -> database
+    producer02 -> redis
+    producer03 -> rabbitmq
+    producer04 -> nats
+    database -> consumer01
+    redis -> consumer02
+    rabbitmq -> consumer03
+    nats -> consumer04
+  }
+
+  worker01: {
+    icon: https://icons.terrastruct.com/essentials%2F092-graph%20bar.svg
+    class: [task]
+  }
+
+  worker02: {
+    icon: https://icons.terrastruct.com/essentials%2F095-download.svg
+    class: [task]
+  }
+
+  worker03: {
+    icon: https://icons.terrastruct.com/essentials%2F092-graph%20bar.svg
+    class: [task]
+  }
+
+  worker04: {
+    icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+    class: [task]
+  }
+
+  task01 -> queue.producer01: {
+    class: [base; enqueue]
+  }
+  task02 -> queue.producer02: {
+    class: [base; enqueue]
+  }
+  task03 -> queue.producer03: {
+    class: [base; enqueue]
+  }
+  task04 -> queue.producer04: {
+    class: [base; enqueue]
+  }
+  queue.consumer01 -> worker01: {
+    class: [base; dispatch]
+  }
+  queue.consumer02 -> worker02: {
+    class: [base; dispatch]
+  }
+  queue.consumer03 -> worker03: {
+    class: [base; dispatch]
+  }
+  queue.consumer04 -> worker04: {
+    class: [base; dispatch]
+  }
+}

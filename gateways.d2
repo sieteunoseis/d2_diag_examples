@@ -1,0 +1,23 @@
+grid-rows: 2
+
+vars: {
+  server-name: BNK1vgw0
+}
+
+server1: ${server-name}3
+server2: ${server-name}4
+
+server1: {
+  icon: https://raw.githubusercontent.com/sieteunoseis/cisco_svg_icons/main/router.svg
+  tooltip: Primary Gateway at the Bunker
+}
+server2: {
+  icon: https://raw.githubusercontent.com/sieteunoseis/cisco_svg_icons/main/router.svg
+}
+
+
+server1 <-> server2
+
+Network.width: 400
+
+server1 -> Network: Gig 0/0
